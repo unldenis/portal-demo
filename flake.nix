@@ -40,7 +40,7 @@
             version = "1.0-SNAPSHOT";
             src = ./.;
 
-            mvnHash = "sha256-dj4osxBTDTuLznL9di3fbJst69VXMtYSs2WkorwFwZY=";
+            mvnHash = "sha256-4yT1zhqQXT1UFU/ztgCQ0nA+yDDvbphPqSxGmk/QSls=";
             nativeBuildInputs = [ pkgs.makeWrapper ];
 
             preBuild = ''
