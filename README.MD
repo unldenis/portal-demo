@@ -19,28 +19,28 @@ A full-stack reference implementation showing how to integrate Portal into a web
 ## Prerequisites
 
 - Docker and Docker Compose
-- [Portal SDK Daemon](https://github.com/PortalTechnologiesInc/lib) (`getportal/sdk-daemon`) running and reachable
+- [Portal REST service](https://github.com/PortalTechnologiesInc/lib) (`getportal/sdk-daemon`) running and reachable
 - [Portal app](https://getportal.cc) on your phone
 
 ---
 
 ## Running with Docker
 
-**Option A — sdk-daemon on the same host (recommended):**
+**Option A — portal-rest on the same host (recommended):**
 
 ```bash
 docker compose --profile host up
 ```
 
-Portal demo at `http://localhost:7070`. Connects to sdk-daemon at `ws://localhost:7000/ws`.
+Portal demo at `http://localhost:7070`. Connects to portal-rest at `http://localhost:3000`.
 
-**Option B — sdk-daemon reachable via network:**
+**Option B — portal-rest reachable via network:**
 
 ```bash
 docker compose up
 ```
 
-sdk-daemon must listen on `0.0.0.0:7000` (not `127.0.0.1`) so the container can reach it via `host.docker.internal`.
+portal-rest must listen on `0.0.0.0:3000` (not `127.0.0.1`) so the container can reach it via `host.docker.internal`.
 
 ---
 
@@ -48,23 +48,23 @@ sdk-daemon must listen on `0.0.0.0:7000` (not `127.0.0.1`) so the container can 
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `REST_WS_ENDPOINT` | WebSocket URL of the running sdk-daemon | `ws://host.docker.internal:7000/ws` |
-| `REST_TOKEN` | Auth token (must match `PORTAL__AUTH__AUTH_TOKEN` on sdk-daemon) | `my-static-token` |
+| `REST_URL` | HTTP URL of the running portal-rest service | `http://host.docker.internal:3000` |
+| `REST_TOKEN` | Auth token (must match `PORTAL__AUTH__AUTH_TOKEN` on portal-rest) | `my-static-token` |
 | `DB_PATH` | Directory for the local SQLite database | `/home/user/portal/demo` |
 
 Edit the values in `docker-compose.yml` or pass them via environment before running.
 
 ---
 
-## Running sdk-daemon
+## Running portal-rest
 
-If you don't have sdk-daemon running yet:
+If you don't have portal-rest running yet:
 
 ```bash
-docker run -d -p 7000:3000 \
+docker run -d -p 3000:3000 \
   -e PORTAL__AUTH__AUTH_TOKEN=my-static-token \
   -e PORTAL__NOSTR__PRIVATE_KEY=your-nostr-private-key-hex \
-  getportal/sdk-daemon:0.3.0
+  getportal/sdk-daemon:0.4.1
 ```
 
 > Generate a Nostr private key with `nak generate` or any Nostr tool.
@@ -84,12 +84,12 @@ npm install
 npm run dev
 ```
 
-Set `REST_WS_ENDPOINT`, `REST_TOKEN`, and `DB_PATH` as environment variables before starting the backend.
+Set `REST_URL`, `REST_TOKEN`, and `DB_PATH` as environment variables before starting the backend.
 
 ---
 
 ## Related
 
-- [Portal lib & SDK Daemon](https://github.com/PortalTechnologiesInc/lib) — source for `getportal/sdk-daemon` and the TypeScript SDK
-- [Java SDK](https://github.com/PortalTechnologiesInc/java-sdk) — used by this demo
+- [Portal lib & REST service](https://github.com/PortalTechnologiesInc/lib) — source for `getportal/sdk-daemon` and the TypeScript SDK
+- [Java SDK](https://github.com/PortalTechnologiesInc/java-sdk) — used by this demo (v0.4.1)
 - [Documentation](https://portaltechnologiesinc.github.io/lib/)

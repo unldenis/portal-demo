@@ -1,10 +1,10 @@
-# Portal SDK connects to Portal over WebSocket. From inside the container you have two options:
+# Portal SDK connects to portal-rest over HTTP.
 #
-# 1) host network (recommended if Portal runs on host): use profile "host"
+# 1) host network (recommended if portal-rest runs on host): use profile "host"
 #    docker compose --profile host up
-#    Portal can listen on 127.0.0.1:7000; container shares host network so localhost works.
+#    portal-rest can listen on 127.0.0.1:3000; container shares host network so localhost works.
 #
-# 2) bridge network: Portal must listen on 0.0.0.0:7000 (not 127.0.0.1) so the container
+# 2) bridge network: portal-rest must listen on 0.0.0.0:3000 (not 127.0.0.1) so the container
 #    can reach it via host.docker.internal.
 
 services:
@@ -21,13 +21,13 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
-      # Bridge: Portal must listen on 0.0.0.0:7000. Or use: docker compose --profile host up
-      REST_WS_ENDPOINT: ws://host.docker.internal:7000/ws
+      # Bridge: portal-rest must listen on 0.0.0.0:3000. Or use: docker compose --profile host up
+      REST_URL: http://host.docker.internal:3000
       REST_TOKEN: my-static-token
       DB_PATH: /home/user/portal/demo
     tty: true
 
-  # Host network: use when Portal runs on host (127.0.0.1:7000). App at http://localhost:7070/
+  # Host network: use when portal-rest runs on host (127.0.0.1:3000). App at http://localhost:7070/
   portal-demo-host:
     profiles:
       - host
@@ -40,7 +40,7 @@ services:
     volumes:
       - portal-demo-volume:/home/user/portal/demo
     environment:
-      REST_WS_ENDPOINT: ws://localhost:7000/ws
+      REST_URL: http://localhost:3000
       REST_TOKEN: my-static-token
       DB_PATH: /home/user/portal/demo
     tty: true
