@@ -39,4 +39,5 @@ build/
 .DS_Store
 
 # nix
-result
+resultnode_modules/
+package-lock.json
